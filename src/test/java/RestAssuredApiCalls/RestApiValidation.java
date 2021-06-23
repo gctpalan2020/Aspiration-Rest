@@ -1,31 +1,30 @@
-package restPack2;
+package RestAssuredApiCalls;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
+import static io.restassured.RestAssured.get;
 
-import static io.restassured.RestAssured.*;
-
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
-
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class Test01 {
+import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
-	@Test
-	void test_01() {
+import helperPack.helperClass;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
+public class RestApiValidation {
+	
+	helperClass helperClassObj = new helperClass();
+	SoftAssert softAssert = new SoftAssert();
+
+	public void GetCallValidateheightGreaterThan200() throws IOException {
 		
-		SoftAssert softAssert = new SoftAssert();
 		
-		List<String> listWithGreaterThan200 = Arrays.asList("Darth Vader", 
-		"Chewbacca","Roos Tarpals","Rugor Nass","Yarael Poof","Lama Su","Tuan Wu",
-		"Grievous","Tarfful","Tion Medon");
+		List<String> listWithGreaterThan200 = Arrays.asList(
+				helperClassObj.getArrayValueFromPropFile("personNamesWhoseHeightGreaterThan200"));
 		
-		String nextUrl = "https://swapi.dev/api/people";
+		String nextUrl = helperClassObj.getStringValueFromPropFile("baseUrl");
 		
 		int totalSizeofResults = 0;
 		int listOfMembersHeightGreaterThan200 = 0;
@@ -66,11 +65,9 @@ public class Test01 {
 //		Assert.assertEquals(totalSizeofResults, 80, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
 //		Assert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
 		
-		softAssert.assertEquals(totalSizeofResults, 80, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
+		softAssert.assertEquals(totalSizeofResults, 81, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
 		softAssert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
 		softAssert.assertAll();
 	
 	}
-	
-
 }
