@@ -1,5 +1,5 @@
 **how to use Code**
-1. open file "src/test/java/restPack2/Test01.java"
+1. open file "src/test/java/RestAssuredTestNg/restAssuredTestNgClass.java"
 2. Right click on above file and click on "run as" -> "TestNG test"
 
 

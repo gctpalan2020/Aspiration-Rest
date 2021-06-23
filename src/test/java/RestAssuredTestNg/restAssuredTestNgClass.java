@@ -8,10 +8,10 @@ import RestAssuredApiCalls.RestApiValidation;
 
 public class restAssuredTestNgClass {
 
+	RestApiValidation restObj = new RestApiValidation();
+	
 	@Test
 	void TestNgValidateHeightGreaterThan200() throws IOException{
-		
-		RestApiValidation restObj = new RestApiValidation();
 		restObj.GetCallValidateheightGreaterThan200();
 	}
 	

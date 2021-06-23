@@ -33,6 +33,7 @@ public class RestApiValidation {
 			
 			Response getResponse = get(nextUrl);
 			int statusCode = getResponse.getStatusCode();
+			// Asserting API response code
 			Assert.assertEquals(statusCode, 200);
 			
 			JsonPath jpath = getResponse.jsonPath();
@@ -46,26 +47,20 @@ public class RestApiValidation {
 			
 				String height =jpath.getString("results["+i+"].height");
 				String name =jpath.getString("results["+i+"].name");
-				
-				if (!("unknown".equalsIgnoreCase(height))) {
-					if(Integer.parseInt(height)>200) {
-						
-						listOfMembersHeightGreaterThan200++;
-						softAssert.assertTrue(listWithGreaterThan200.contains(name), "API returned name - "+name +" - whose height is greater than 200 But its not in the provided list ");
-						
-//						Assert.assertTrue(listWithGreaterThan200.contains(name), "API returned name - "+name +" - whose height is greater than 200 But its not in the provided list ");
-					}
-					
+				//Skip validation if height is unknown
+				if (!("unknown".equalsIgnoreCase(height)) && (Integer.parseInt(height)>200)) {	
+					listOfMembersHeightGreaterThan200++;
+					// validating the names whose height is greater than 200
+					softAssert.assertTrue(listWithGreaterThan200.contains(name), "API returned name - "+name +" - whose height is greater than 200 But its not in the provided list ");
 				}
 			
 			}
 			
 		}
 		
-//		Assert.assertEquals(totalSizeofResults, 80, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
-//		Assert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
-		
-		softAssert.assertEquals(totalSizeofResults, 81, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
+		//validating is total result is 82
+		softAssert.assertEquals(totalSizeofResults, 82, "Total size of elements returned by API is not equal to 82 - but it is "+totalSizeofResults);
+		// validating total members whose height is greater than 200 is 10
 		softAssert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
 		softAssert.assertAll();
 	
