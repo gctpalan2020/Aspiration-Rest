@@ -2,6 +2,7 @@ package restPack2;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import static io.restassured.RestAssured.*;
 
@@ -18,17 +19,7 @@ public class Test01 {
 	@Test
 	void test_01() {
 		
-		
-//		Response response = get("https://swapi.dev/api/people");
-////		Response response = RestAssured.get("https://reqres.in/api/users?page=2");
-//		System.out.println(response.getStatusCode());
-//		System.out.println(response.getBody());
-//		System.out.println(response.asString());
-//		System.out.println(response.getStatusLine());
-//		System.out.println(response.getContentType());
-//		System.out.println(response.getTime());
-		
-		
+		SoftAssert softAssert = new SoftAssert();
 		
 		List<String> listWithGreaterThan200 = Arrays.asList("Darth Vader", 
 		"Chewbacca","Roos Tarpals","Rugor Nass","Yarael Poof","Lama Su","Tuan Wu",
@@ -55,15 +46,15 @@ public class Test01 {
 			{
 			
 				String height =jpath.getString("results["+i+"].height");
-//				System.out.println(height);
 				String name =jpath.getString("results["+i+"].name");
-//				System.out.println(name);
 				
 				if (!("unknown".equalsIgnoreCase(height))) {
 					if(Integer.parseInt(height)>200) {
 						
 						listOfMembersHeightGreaterThan200++;
-						Assert.assertTrue(listWithGreaterThan200.contains(name));
+						softAssert.assertTrue(listWithGreaterThan200.contains(name), "API returned name - "+name +" - whose height is greater than 200 But its not in the provided list ");
+						
+//						Assert.assertTrue(listWithGreaterThan200.contains(name), "API returned name - "+name +" - whose height is greater than 200 But its not in the provided list ");
 					}
 					
 				}
@@ -72,20 +63,14 @@ public class Test01 {
 			
 		}
 		
-		Assert.assertEquals(totalSizeofResults, 82);
+//		Assert.assertEquals(totalSizeofResults, 80, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
+//		Assert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
 		
-		Assert.assertEquals(listOfMembersHeightGreaterThan200, 10);
-		
+		softAssert.assertEquals(totalSizeofResults, 80, "Total size of elements returned by API is not equal to 81 - but it is "+totalSizeofResults);
+		softAssert.assertEquals(listOfMembersHeightGreaterThan200, 10, "Number of people with height greater than 200 is not 10 - but it is "+listOfMembersHeightGreaterThan200);
+		softAssert.assertAll();
 	
 	}
 	
-//	@Test
-//	void test_02() {
-//		
-//		given()
-//		.get("https://swapi.dev/api/people")
-//		.then().statusCode(200)
-//		.body("results.height", equalTo(7));
-//	
-//	}
+
 }
